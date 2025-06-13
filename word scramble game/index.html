@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word Scramble Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #07518d; /* Green background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 350px;
+    }
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .scrambled-word {
+      font-size: 24px;
+      letter-spacing: 10px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .hint {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .timer {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .refresh-btn {
+      background-color: #444;
+      color: white;
+    }
+    .check-btn {
+      background-color: #59745c;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="title">Word Scramble Game</div>
+  <div class="scrambled-word" id="scrambledWord">A D D I T I O N</div>
+  <div class="hint" id="hint">Hint: The process of adding numbers</div>
+  <div class="timer" id="timer">Time Left: 30s</div>
+  <input type="text" id="userInput" placeholder="Enter a valid word" />
+  <div class="buttons">
+    <button class="refresh-btn" onclick="refreshWord()">Refresh button</button>
+    <button class="check-btn" onclick="checkWord()">Check word</button>
+  </div>
+</div>
+
+<script>
+  const words = [
+    { word: "shah rukh khan", hint: "who is the king of the bollywood " },
+    { word: "computer", hint: "An electronic machine for processing data" },
+    { word: "javascript", hint: "A programming language for the web" },
+    { word: "central processing unit", hint: " what does cpu stand for" },
+    { word: "engineer", hint: "A person who designs and builds things" }
+  ];
+
+  let currentWord = "";
+  let timer;
+
+  function shuffleWord(word) {
+    return word.split('').sort(() => 0.5 - Math.random()).join('').toUpperCase();
+  }
+
+  function refreshWord() {
+    clearInterval(timer);
+    const randomIndex = Math.floor(Math.random() * words.length);
+    currentWord = words[randomIndex].word;
+    document.getElementById("scrambledWord").innerText = shuffleWord(currentWord);
+    document.getElementById("hint").innerText = "Hint: " + words[randomIndex].hint;
+    document.getElementById("userInput").value = "";
+    startTimer();
+  }
+
+  function checkWord() {
+    const input = document.getElementById("userInput").value.trim().toLowerCase();
+    if (input === currentWord) {
+      alert("✅ Correct!");
+    } else {
+      alert("❌ Incorrect. Try again!");
+    }
+  }
+
+  function startTimer() {
+    let timeLeft = 30;
+    document.getElementById("timer").innerText = "Time Left: " + timeLeft + "s";
+
+    timer = setInterval(() => {
+      timeLeft--;
+      document.getElementById("timer").innerText = "Time Left: " + timeLeft + "s";
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        alert("⏰ Time's up! The word was: " + currentWord);
+        refreshWord();
+      }
+    }, 1000);
+  }
+
+  // Initialize game
+  refreshWord();
+</script>
+
+</body>
+</html
